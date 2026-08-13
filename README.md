@@ -31,13 +31,32 @@ So `tools/convert.mjs` rewrites each file into MP4:
 writes to a separate `converted/` directory. Delete `converted/` and you are
 exactly where you started.
 
-The size win is usually large, because retail releases carry every dubbed
-language. A 3.5 GB episode is often ~850 MB of video and ~2.7 GB of audio you
-will never listen to:
+The size win is usually large, because a streaming release carries every dubbed
+language — often fifteen or twenty tracks, each one 5.1 at 640 kbps. The video
+is a minority of the file. Rough estimates for 1080p H.264 at about 4 Mbps,
+keeping one stereo AAC track at 192 kbps:
 
-```
-3.5 GB  →  866 MB   (-76%)   in ~20 seconds per episode
-```
+| Runtime | Source | Video kept | New audio | Output | Saving | Time |
+|---|---|---|---|---|---|---|
+| 30 min | ~4 GB | 900 MB | 45 MB | **~0.95 GB** | -76% | ~20 s |
+| 45 min | ~6 GB | 1.35 GB | 65 MB | **~1.4 GB** | -76% | ~30 s |
+| 60 min | ~8 GB | 1.8 GB | 85 MB | **~1.9 GB** | -76% | ~40 s |
+
+Treat these as ballpark. The output column is reliable — it is just runtime ×
+bitrate, and the video is copied rather than re-encoded, so its size is whatever
+it already was. The *saving* is the speculative half, because it depends
+entirely on how many dub tracks your source happens to carry. Run
+`node tools/probe.mjs` for real numbers on your own files rather than these.
+
+Two cases where the win largely disappears: a source with **only one or two
+audio tracks** has nothing to discard, so expect a few percent rather than
+three-quarters — the conversion buys browser compatibility, not space. And
+**H.265/HEVC** video cannot be copied, so it is re-encoded, which changes both
+the size and the time drastically (minutes per episode, not seconds).
+
+Timings assume a local SSD. Conversion is I/O-bound, not CPU-bound, since the
+video is only being copied — reading from or writing to a USB 2.0 stick will
+dominate everything else.
 
 ---
 
