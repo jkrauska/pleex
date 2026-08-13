@@ -1,0 +1,17 @@
+{
+  "name": "pleex",
+  "version": "0.1.0",
+  "description": "A portable, offline, Plex-like media UI that runs straight from a USB stick.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "probe": "node tools/probe.mjs",
+    "convert": "node tools/convert.mjs",
+    "markers": "node tools/markers.mjs",
+    "index": "node tools/index.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
